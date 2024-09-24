@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
 });
 
 //Rota para listar todos os usuarios
-router.get('/', async (req,res) => {
+router.get('/', async (req,res) => {    
     try {
         const users = await User.find();//Busca todos os usuarios
         res.json(users); //Retorna lista de usuarios
@@ -35,5 +35,18 @@ router.get('/', async (req,res) => {
         res.status(400).json({message: 'Erro ao atualizar o usuario', error});
     }
  });
+
+// Rota para excluir um usuário pelo _id
+router.delete('/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+    res.json({ message: 'Usuário excluído com sucesso' });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao excluir usuário', error });
+  }
+});
 
 module.exports = router; // Exporte o objeto router

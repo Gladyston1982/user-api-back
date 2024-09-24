@@ -1,11 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors'); // Importe o cors
 const userRoutes = require('./routes/userRoutes.js'); //Importa as rotas
 
 const app = express();
 
 // Middleware para permitir que a API lide com JSON
 app.use(express.json());
+
+// Middleware CORS
+app.use(cors()); // Adicione o middleware cors
 
 //Conexão com o MongoDB
 mongoose.connect('mongodb://localhost:27017/user-api', {
