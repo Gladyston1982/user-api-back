@@ -1,3 +1,4 @@
+const {ObjectId } = require('mongodb');
 const express = require('express');
 const User = require('../models/User'); // Importa modelo de usuario
 
@@ -48,5 +49,20 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: 'Erro ao excluir usuário', error });
   }
 });
+
+// Rota para buscar um usuário pelo _id
+router.get('/:id', async (req, res) => {
+    try { 
+        let idUser = new ObjectId(req.params.id)
+        const user = await User.findOne({ _id: idUser.toString() }); // Busca o usuário pelo ID
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+        res.json(user); // Retorna os dados do usuário encontrado
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar usuário', error });
+    }
+});
+
 
 module.exports = router; // Exporte o objeto router
